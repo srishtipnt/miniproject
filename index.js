@@ -84,3 +84,57 @@ fetch('https://dummyjson.com/products')
     })
     .catch(err => console.error('Error fetching products:', err));
 
+document.getElementById('search').addEventListener('click', () => {
+    const query = document.getElementById('searchInput').value.toLowerCase().trim();
+    if (!query) return;
+
+    fetch('https://dummyjson.com/products')
+        .then(res => res.json())
+        .then(data => {
+            allProducts = data.products.filter(product => 
+                product.title.toLowerCase().includes(query)
+            );
+            currentPage = 1; 
+            renderProducts(allProducts);
+        });
+
+    let suggestions = JSON.parse(localStorage.getItem('suggestions')) || [];
+    const isDuplicate = suggestions.some(item => item.query === query);
+    
+    if (!isDuplicate) {
+        suggestions.push({ query: query, time: Date.now() });
+        localStorage.setItem('suggestions', JSON.stringify(suggestions));
+        if (typeof renderSearchHistory === 'function') renderSearchHistory();
+    }
+    
+    document.getElementById('suggestion').innerHTML = '';
+});
+
+const suggestionDiv = document.getElementById('suggestion');
+const searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase().trim();
+    if (!query) {
+        suggestionDiv.innerHTML = '';
+        return;
+    }
+
+    const suggestions = JSON.parse(localStorage.getItem('suggestions')) || [];
+    const filteredSuggestions = suggestions.filter(item => 
+        item.query.toLowerCase().includes(query)
+    );
+
+    suggestionDiv.innerHTML = '';
+    filteredSuggestions.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerText = item.query;   
+        div.addEventListener('click', () => {
+            searchInput.value = item.query;
+            suggestionDiv.innerHTML = '';
+            document.getElementById('search').click(); 
+        });
+        suggestionDiv.appendChild(div);
+    });
+});
