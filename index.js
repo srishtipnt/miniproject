@@ -48,4 +48,39 @@ function renderPaginationControls(totalItems) {
         renderProducts(allProducts);
         window.scrollTo(0, 0);
     };
+    paginationContainer.appendChild(prevBtn);
+
+    // Page X of Y Info
+    const pageInfo = document.createElement('span');
+    pageInfo.className = 'page-info';
+    pageInfo.innerText = `Page ${currentPage} of ${totalPages}`;
+    paginationContainer.appendChild(pageInfo);
+
+    // Next Button
+    const nextBtn = document.createElement('button');
+    nextBtn.innerText = 'Next';
+    nextBtn.className = 'page-btn';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.onclick = () => {
+        currentPage++;
+        renderProducts(allProducts);
+        window.scrollTo(0, 0);
+    };
+    paginationContainer.appendChild(nextBtn);
 }
+
+function saveToViewHistory(product) {
+    let viewed = JSON.parse(localStorage.getItem('viewedProducts')) || [];
+    viewed = viewed.filter(p => p.id !== product.id);
+    viewed.unshift({ id: product.id, title: product.title });
+    localStorage.setItem('viewedProducts', JSON.stringify(viewed.slice(0, 10)));
+}
+
+fetch('https://dummyjson.com/products')
+    .then(res => res.json())
+    .then(data => {
+        allProducts = data.products;
+        renderProducts(allProducts);
+    })
+    .catch(err => console.error('Error fetching products:', err));
+
