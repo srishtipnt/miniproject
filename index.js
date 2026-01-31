@@ -41,4 +41,31 @@ function renderPaginationControls(totalItems) {
     // Prev Button
     const prevBtn = document.createElement('button');
     prevBtn.innerText = 'Prev';
+    prevBtn.className = 'page-btn';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => {
+        currentPage--;
+        renderProducts(allProducts);
+        window.scrollTo(0, 0);
+    };
+    paginationContainer.appendChild(prevBtn);
+
+    // Page X of Y Info
+    const pageInfo = document.createElement('span');
+    pageInfo.className = 'page-info';
+    pageInfo.innerText = `Page ${currentPage} of ${totalPages}`;
+    paginationContainer.appendChild(pageInfo);
+
+    // Next Button
+    const nextBtn = document.createElement('button');
+    nextBtn.innerText = 'Next';
+    nextBtn.className = 'page-btn';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.onclick = () => {
+        currentPage++;
+        renderProducts(allProducts);
+        window.scrollTo(0, 0);
+    };
+    paginationContainer.appendChild(nextBtn);
 }
+
