@@ -41,4 +41,11 @@ function renderPaginationControls(totalItems) {
     // Prev Button
     const prevBtn = document.createElement('button');
     prevBtn.innerText = 'Prev';
+    prevBtn.className = 'page-btn';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => {
+        currentPage--;
+        renderProducts(allProducts);
+        window.scrollTo(0, 0);
+    };
 }
