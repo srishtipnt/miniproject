@@ -69,3 +69,18 @@ function renderPaginationControls(totalItems) {
     paginationContainer.appendChild(nextBtn);
 }
 
+function saveToViewHistory(product) {
+    let viewed = JSON.parse(localStorage.getItem('viewedProducts')) || [];
+    viewed = viewed.filter(p => p.id !== product.id);
+    viewed.unshift({ id: product.id, title: product.title });
+    localStorage.setItem('viewedProducts', JSON.stringify(viewed.slice(0, 10)));
+}
+
+fetch('https://dummyjson.com/products')
+    .then(res => res.json())
+    .then(data => {
+        allProducts = data.products;
+        renderProducts(allProducts);
+    })
+    .catch(err => console.error('Error fetching products:', err));
+
