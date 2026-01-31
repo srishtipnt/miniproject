@@ -55,3 +55,40 @@ function renderViewHistory() {
         });
     }
 }
+
+window.goToSearch = (query) => {
+    window.location.href = `index.html?search=${encodeURIComponent(query)}`;
+};
+
+window.deleteHistoryItem = (index) => {
+    suggestions.splice(index, 1);
+    localStorage.setItem('suggestions', JSON.stringify(suggestions));
+    renderSearchHistory();
+};
+
+window.deleteViewItem = (index) => {
+    viewedProducts.splice(index, 1);
+    localStorage.setItem('viewedProducts', JSON.stringify(viewedProducts));
+    renderViewHistory();
+};
+
+document.getElementById('clear-all').addEventListener('click', () => {
+    if (confirm('Permanently clear all search history?')) {
+        suggestions = [];
+        localStorage.removeItem('suggestions');
+        renderSearchHistory();
+    }
+});
+
+document.getElementById('clear-views').addEventListener('click', () => {
+    if (confirm('Permanently clear all viewed products?')) {
+        viewedProducts = [];
+        localStorage.removeItem('viewedProducts');
+        renderViewHistory();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderSearchHistory();
+    renderViewHistory();
+});

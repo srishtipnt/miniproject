@@ -125,4 +125,52 @@
         text-align: center;
         padding: 20px 0;
     }
-    
+    /* Pagination Styles */
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        padding: 20px 0 40px 0;
+    }
+    .page-btn {
+        padding: 8px 20px;
+        border: 1px solid #2196f3;
+        background: #fff;
+        color: #2196f3;
+        cursor: pointer;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+    .page-btn:hover:not(:disabled) {
+        background: #e3f2fd;
+    }
+    .page-btn:disabled {
+        border-color: #ccc;
+        color: #aaa;
+        cursor: not-allowed;
+    }
+    .page-info {
+        font-size: 1rem;
+        color: #555;
+        font-weight: bold;
+    }
+    </style>
+</head>
+<body>
+    <h1>Product Store</h1>
+    <div class="search-container">
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" placeholder="Search products...">
+            <button id="search">Search</button>
+            <button id="history"><a href="./history.html">History</a></button>
+            <div id="suggestion"></div>
+        </div>
+    </div>
+
+    <div id="box"></div>
+    <div id="pagination" class="pagination-container"></div>
+
+    <script src="index.js"></script>
+</body>
+</html>
